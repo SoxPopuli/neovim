@@ -583,6 +583,20 @@ Integer nvim_buf_set_extmark(Buffer buffer, Integer ns_id, Integer line, Integer
     }
   }
 
+  if (HAS_KEY(opts, set_extmark, conceal_line)) {
+    hl.flags |= kSHConcealLine;
+    has_hl = true;
+    String c = opts->conceal_line;
+    if (c.size > 0) {
+      int ch;
+      hl.conceal_char = utfc_ptr2schar_len(c.data, (int)c.size, &ch);
+      if (!hl.conceal_char || !vim_isprintc(ch)) {
+        api_set_error(err, kErrorTypeValidation, "conceal char has to be printable");
+        goto error;
+      }
+    }
+  }
+
   if (HAS_KEY(opts, set_extmark, virt_text)) {
     virt_text.data.virt_text = parse_virt_text(opts->virt_text, err, &virt_text.width);
     if (ERROR_SET(err)) {

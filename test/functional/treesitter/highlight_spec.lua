@@ -714,6 +714,10 @@ describe('treesitter highlighting (C)', function()
     }
   end)
 
+  it('supports conceal_line attribute', function ()
+    
+  end)
+
   it('@foo.bar groups has the correct fallback behavior', function()
     local get_hl = function(name)
       return api.nvim_get_hl_by_name(name, 1).foreground
